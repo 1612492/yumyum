@@ -1,9 +1,12 @@
 import clsx from 'clsx';
-import { foods } from '../data';
-import dislike from '../images/dislike.svg';
-import like from '../images/like.svg';
-import superLike from '../images/super-like.svg';
-import Button from './button';
+import { useContext } from 'react';
+import Empty from './empty';
+import Button from '../../../components/button';
+import { foods } from '../../../data';
+import dislike from '../../../images/dislike.svg';
+import like from '../../../images/like.svg';
+import superLike from '../../../images/super-like.svg';
+import { StateContext, StateUpdateContext } from '../provider';
 
 const actions = [
   { name: 'Ngán', image: dislike },
@@ -11,14 +14,12 @@ const actions = [
   { name: 'Thèm', image: superLike },
 ];
 
-type Props = {
-  likes: number[];
-  dislikes: number[];
-  superLikes: number[];
-  onSelect: (action: number) => void;
-};
+const Gallery = () => {
+  const { currentId, likes, dislikes, superLikes } = useContext(StateContext);
+  const { add } = useContext(StateUpdateContext);
 
-const Gallery = ({ likes, dislikes, superLikes, onSelect }: Props) => {
+  if (currentId >= foods.length) return <Empty />;
+
   return (
     <div className="flex flex-1 flex-col justify-between">
       <div className="relative aspect-square bg-white">
@@ -46,7 +47,7 @@ const Gallery = ({ likes, dislikes, superLikes, onSelect }: Props) => {
       </div>
       <div className="mt-8 grid grid-cols-3 gap-x-6">
         {actions.map(({ name, image }, index) => (
-          <Button key={index} onClick={() => onSelect(index)}>
+          <Button key={index} onClick={() => add(index)}>
             <img src={image} alt="emoji" className="mx-auto w-10" />
             <div className="mt-2">{name}</div>
           </Button>
