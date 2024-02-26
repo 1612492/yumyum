@@ -7,6 +7,7 @@ import dislike from '../../../images/dislike.svg';
 import like from '../../../images/like.svg';
 import superLike from '../../../images/super-like.svg';
 import { StateContext, StateUpdateContext } from '../provider';
+import Image from './image';
 
 const actions = [
   { name: 'Ngán', image: dislike },
@@ -23,8 +24,9 @@ const Gallery = () => {
   return (
     <div className="flex flex-1 flex-col justify-between">
       <div className="relative aspect-square bg-white">
-        {foods.map(({ name, image }, index) => (
+        {foods.map(({ name, loadImg }, index) => (
           <div
+            key={index}
             style={{ zIndex: foods.length - index }}
             className={clsx(
               'absolute inset-0',
@@ -33,9 +35,8 @@ const Gallery = () => {
               superLikes.includes(index) && 'animate-slide-up'
             )}
           >
-            <img
-              key={index}
-              src={image}
+            <Image
+              loadImg={loadImg}
               alt="food"
               className="h-full w-full rounded-md border-2 border-black object-cover shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             />
